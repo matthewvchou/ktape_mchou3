@@ -1,0 +1,13 @@
+(a^n)(b^n)(c^n),2
+aabc
+q0,q1,q2,q3,q4
+q4
+q3
+q4,_,_,q3,_,_,R,R
+q4,a,_,q0,a,a,R,R
+q0,a,_,q0,a,a,R,R
+q0,b,_,q1,b,_,S,L
+q1,b,a,q1,b,a,R,L
+q1,c,_,q2,c,_,S,R
+q2,c,a,q2,c,a,R,R
+q2,_,_,q3,_,_,R,R

@@ -1,0 +1,26 @@
+Machine Name: wcw
+Input String: c
+Start State : q0
+------------------
+Step 1
+Next State: q1
+Tape 0: c
+        ^
+Tape 1: _ _
+        ^  
+------------------
+Step 2
+Next State: q2
+Tape 0: c _
+          ^
+Tape 1: _ _
+          ^
+------------------
+Step 3
+Next State: qaccept
+Tape 0: c _
+          ^
+Tape 1: _ _
+          ^
+------------------
+c is Accepted.

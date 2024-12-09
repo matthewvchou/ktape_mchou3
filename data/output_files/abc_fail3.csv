@@ -1,0 +1,6 @@
+Machine Name: (a^n)(b^n)(c^n)
+Input String: cba
+Start State : q4
+------------------
+Transition ('q4', ('c', '_')) does not exist.
+String is NOT accepted.

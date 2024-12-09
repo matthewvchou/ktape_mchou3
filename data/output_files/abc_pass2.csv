@@ -1,0 +1,47 @@
+Machine Name: (a^n)(b^n)(c^n)
+Input String: abc
+Start State : q4
+------------------
+Step 1
+Next State: q0
+Tape 0: a b c
+          ^  
+Tape 1: a _
+          ^
+------------------
+Step 2
+Next State: q1
+Tape 0: a b c
+          ^  
+Tape 1: a _
+        ^  
+------------------
+Step 3
+Next State: q1
+Tape 0: a b c
+            ^
+Tape 1: _ a _
+        ^    
+------------------
+Step 4
+Next State: q2
+Tape 0: a b c
+            ^
+Tape 1: _ a _
+          ^  
+------------------
+Step 5
+Next State: q2
+Tape 0: a b c _
+              ^
+Tape 1: _ a _
+            ^
+------------------
+Step 6
+Next State: q3
+Tape 0: a b c _ _
+                ^
+Tape 1: _ a _ _
+              ^
+------------------
+abc is Accepted.

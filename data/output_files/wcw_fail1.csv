@@ -1,0 +1,6 @@
+Machine Name: wcw
+Input String: _
+Start State : q0
+------------------
+Transition ('q0', ('_', '_')) does not exist.
+String is NOT accepted.
