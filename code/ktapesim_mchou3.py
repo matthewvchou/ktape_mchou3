@@ -53,66 +53,127 @@ class ktape:
         self.accept = accept                                                            # Accept States (Assume All Other States are Reject States)
 
     def _replace_wildcards(self, tape_list):
+        '''
+        Replaces wildcards within transition.
+
+        Input:
+            tape_list:  Instance of transition with wildcards in it.
+        
+        Output:
+            new_tape:   Instance of transition with wildcards replaced with characters in tape alphabet (yields one instance per character in tape alphabet minus the '*' character)
+        '''
         # Create new tape lists with characters in tape alphabet applied to all wildcards
         for char in self.tape_alphabet:
+            # Skipping the '*' character
             if char == '*':
                 continue
-            new_tape = [char if value == '*' else value for value in tape_list]
-            yield new_tape
+            # Replace '*' character with new character
+            new_transition = [char if value == '*' else value for value in tape_list]
+            # Yield new transition
+            yield new_transition
 
     def _make_transition(self, raw: list[str]):
-        # Look to see if wildcard appears
+        '''
+        Making a singluar instance of a transition.
+
+        Input:
+            raw:  Instance of a transition in a raw for (list of strings).
+        '''
+        # See if wildcard appears within the transition
         if '*' in raw:
+            # If it does, then create a new transition for each other character within the tape alphabet
             for replacement in self._replace_wildcards(raw):
                 self._make_transition(replacement)
+        # Creating a new transition
         else:
             # Splicing the list into appropriate tuples for dictionary entry
             self.transitions[(raw[0], tuple(raw[1:self.num_tapes + 1]))] = (raw[self.num_tapes + 1], tuple(raw[self.num_tapes + 2:self.num_tapes * 2 + 2]), tuple(raw[self.num_tapes * 2 + 2:]))
 
     def _take_transition(self, step: int):
+        '''
+        Simulating a SINGULAR transition based on the current state of the machine and the characters of the tape heads.
+
+        Input:
+            step:  The current iteration/transition number the machine is on.
+        '''
+        # Creating tuple of the characters the each respective tape head is pointing to
         reading = tuple(self.tapes[i][position] for i, position in enumerate(self.heads))
+        # Creating tuple of the full transition
         current = (self.current_state, reading)
+
+        # Attempting to take a transition
         try:
             transition = self.transitions[current]
+        # If the transition is not found, then stop the machine --> Means that the machine will not accept the string
         except:
             print("------------------")
             print(f"Transition {current} does not exist.")
             print("String is NOT accepted.")
             sys.exit(1)
+
+        # Getting the machine state after the transition is taken
         next_state = transition[0]
         writing = transition[1]
         movements = transition[2]
+
+        # Print status of machine after the transition is taken
         print("------------------")
         print(f"Step {step}")
         print(f"Next State: {next_state}")
+        # Taking actual transition
         self._write_and_move(writing, movements)
+        # For each tape, print out the status of the tape after taking the transition
         for tape_number in range(self.num_tapes):
             print(f"Tape {tape_number}: {' '.join(self.tapes[tape_number])}")
             pointer_line = ' '.join('^' if i == self.heads[tape_number] else ' ' for i in range(len(self.tapes[tape_number])))
             print(f"        {pointer_line}")
+
+        # Update the current state of the machine
         self.current_state = next_state
 
-    def _write_and_move(self, writing, movements): 
+    def _write_and_move(self, writing, movements):
+        '''
+        Writing characters to the tape and also moving tape heads for all tapes per transition.
+
+        Input:
+            writing:    What the should be written to each tape.
+            movements:  How each tape head should move.
+        '''
+        # Go through all tapes and write/move respectively
         for tape_number in range(self.num_tapes):
+            # Write the character onto the tape
             self.tapes[tape_number][self.heads[tape_number]] = writing[tape_number]
+            # Move the tape head
             self.heads[tape_number] += TAPE_MOVEMENTS[movements[tape_number]]
+            # SPECIAL CASE: If the tape has reached the 'end' (i.e. no more unique characters), then append on a blank character
             if self.heads[tape_number] >= len(self.tapes[tape_number]):
                 self.tapes[tape_number].append('_')
+            # SPECIAL CASE: If the tape head attempts to go left past the first element, add a blank to the beginning of the tape and set head to 0
+            # This gives the tape the infinite-ness on BOTH ends
             if self.heads[tape_number] < 0:
                 self.tapes[tape_number].insert(0, '_')
                 self.heads[tape_number] = 0
 
 
     def _simulate(self):
+        '''
+        Simulates the entire ktape machine, taking whichever transition possible.
+        '''
+        # Print Machine Name, Input String, and Starting State
         print(f"Machine Name: {self.name}")
         input_string = ''.join(self.tapes[0])
         print(f"Input String: {input_string}")
         print(f"Start State : {self.start}")
         step = 1
+
+        # Taking Whichever Transition Possible
+        # NOTE: We are assuming that the first tape is the 'control' tape and will properly stop when a blank is reached
         while(self.tapes[0][self.heads[0]] != '_'):
             self._take_transition(step)
             step += 1
+        # Take one more transition --> necessary to reach accept state
         self._take_transition(step)
+        # Print if string was accepted or not
         print("------------------")
         if self.current_state in self.accept:
             print(f"{input_string} is Accepted.")
@@ -137,6 +198,7 @@ def main():
         # For the rest of the rows in CSV file, should be transitions --> Add in transitions
         for raw in reader:
             machine._make_transition(raw)
+        # Simulate the entirety of the ktape machine
         machine._simulate()
 
 if __name__ == '__main__':
