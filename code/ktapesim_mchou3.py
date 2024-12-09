@@ -53,10 +53,6 @@ class ktape:
         self.start = start                                                              # Starting State
         self.accept = accept                                                            # Accept States (Assume All Other States are Reject States)
 
-    def _simulate(self):
-        print(f"Machine Name: {self.name}")
-        print(f"Input String: {''.join(self.tapes[0])}")
-
     def _replace_wildcards(self, tape_list):
         # Create new tape lists with characters in tape alphabet applied to all wildcards
         for char in self.tape_alphabet:
@@ -74,6 +70,41 @@ class ktape:
             # Splicing the list into appropriate tuples for dictionary entry
             self.transitions[(raw[0], tuple(raw[1:self.num_tapes + 1]))] = (raw[self.num_tapes + 1], tuple(raw[self.num_tapes + 2:self.num_tapes * 2 + 2]), tuple(raw[self.num_tapes * 2 + 2:]))
 
+    def _take_transition(self):
+        reading = tuple(self.tapes[i][position] for i, position in enumerate(self.heads))
+        current = (self.current_state, reading)
+        transition = self.transitions[current]
+        next_state = transition[0]
+        writing = transition[1]
+        movements = transition[2]
+        print("------------------")
+        print(f"Next State: {next_state}")
+        self._write_and_move(writing, movements)
+        for tape_number in range(self.num_tapes):
+            print(f"Tape {tape_number}: {' '.join(self.tapes[tape_number])}")
+        self.current_state = next_state
+
+    def _write_and_move(self, writing, movements): 
+        for tape_number in range(self.num_tapes):
+            self.tapes[tape_number][self.heads[tape_number]] = writing[tape_number]
+            self.heads[tape_number] += TAPE_MOVEMENTS[movements[tape_number]]
+            if self.heads[tape_number] >= len(self.tapes[tape_number]):
+                self.tapes[tape_number].append('_')
+
+
+    def _simulate(self):
+        print(f"Machine Name: {self.name}")
+        print(f"Input String: {''.join(self.tapes[0])}")
+        print(f"Start State : {self.start}")
+        for character in self.tapes[0]:
+            self._take_transition()
+        print("------------------")
+        if self.current_state == self.accept:
+            print("String is Accepted.")
+        else:
+            print("String is NOT Accepted.")
+
+
 # Main
 def main():
     # Check if a filenames are passed as argument
@@ -88,7 +119,7 @@ def main():
         # First 5 rows: Machine Name, Number of Tapes, Tape Input, Set of States, Starting State, Accepting States
         first_five = [next(reader) for _ in range(5)]
         machine = ktape(first_five[0][0], int(first_five[0][1]), first_five[1][0], first_five[2], first_five[3][0], first_five[4])
-        # For the rest of the rows in CSV file, should be 
+        # For the rest of the rows in CSV file, should be transitions --> Add in transitions
         for raw in reader:
             machine._make_transition(raw)
         machine._simulate()
