@@ -1,11 +1,11 @@
 wcw,2
-ababcabab
+c
 q0,q1,q2,qaccept
 q0
 qaccept
 q0,a,_,q0,a,a,R,R
 q0,b,_,q0,b,b,R,R
-q0,c,_,q1,c,c,S,L
+q0,c,_,q1,c,_,S,L
 q1,c,a,q1,c,a,S,L
 q1,c,b,q1,c,b,S,L
 q1,c,_,q2,c,_,R,R

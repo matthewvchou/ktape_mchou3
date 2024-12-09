@@ -3,7 +3,6 @@
 import sys
 import time
 import csv
-from itertools import product
 
 '''
 
@@ -70,18 +69,27 @@ class ktape:
             # Splicing the list into appropriate tuples for dictionary entry
             self.transitions[(raw[0], tuple(raw[1:self.num_tapes + 1]))] = (raw[self.num_tapes + 1], tuple(raw[self.num_tapes + 2:self.num_tapes * 2 + 2]), tuple(raw[self.num_tapes * 2 + 2:]))
 
-    def _take_transition(self):
+    def _take_transition(self, step: int):
         reading = tuple(self.tapes[i][position] for i, position in enumerate(self.heads))
         current = (self.current_state, reading)
-        transition = self.transitions[current]
+        try:
+            transition = self.transitions[current]
+        except:
+            print("------------------")
+            print(f"Transition {current} does not exist.")
+            print("String is NOT accepted.")
+            sys.exit(1)
         next_state = transition[0]
         writing = transition[1]
         movements = transition[2]
         print("------------------")
+        print(f"Step {step}")
         print(f"Next State: {next_state}")
         self._write_and_move(writing, movements)
         for tape_number in range(self.num_tapes):
             print(f"Tape {tape_number}: {' '.join(self.tapes[tape_number])}")
+            pointer_line = ' '.join('^' if i == self.heads[tape_number] else ' ' for i in range(len(self.tapes[tape_number])))
+            print(f"        {pointer_line}")
         self.current_state = next_state
 
     def _write_and_move(self, writing, movements): 
@@ -90,19 +98,26 @@ class ktape:
             self.heads[tape_number] += TAPE_MOVEMENTS[movements[tape_number]]
             if self.heads[tape_number] >= len(self.tapes[tape_number]):
                 self.tapes[tape_number].append('_')
+            if self.heads[tape_number] < 0:
+                self.tapes[tape_number].insert(0, '_')
+                self.heads[tape_number] = 0
 
 
     def _simulate(self):
         print(f"Machine Name: {self.name}")
-        print(f"Input String: {''.join(self.tapes[0])}")
+        input_string = ''.join(self.tapes[0])
+        print(f"Input String: {input_string}")
         print(f"Start State : {self.start}")
-        for character in self.tapes[0]:
-            self._take_transition()
+        step = 1
+        while(self.tapes[0][self.heads[0]] != '_'):
+            self._take_transition(step)
+            step += 1
+        self._take_transition(step)
         print("------------------")
-        if self.current_state == self.accept:
-            print("String is Accepted.")
+        if self.current_state in self.accept:
+            print(f"{input_string} is Accepted.")
         else:
-            print("String is NOT Accepted.")
+            print(f"{input_string} is NOT Accepted.")
 
 
 # Main

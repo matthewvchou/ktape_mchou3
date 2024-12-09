@@ -1,0 +1,34 @@
+Machine Name: (a^n)(b^n)(c^n)
+Input String: aabc
+Start State : q4
+------------------
+Step 1
+Next State: q0
+Tape 0: a a b c
+          ^    
+Tape 1: a _
+          ^
+------------------
+Step 2
+Next State: q0
+Tape 0: a a b c
+            ^  
+Tape 1: a a _
+            ^
+------------------
+Step 3
+Next State: q1
+Tape 0: a a b c
+            ^  
+Tape 1: a a _
+          ^  
+------------------
+Step 4
+Next State: q1
+Tape 0: a a b c
+              ^
+Tape 1: a a _
+        ^    
+------------------
+Transition ('q1', ('c', 'a')) does not exist.
+String is NOT accepted.

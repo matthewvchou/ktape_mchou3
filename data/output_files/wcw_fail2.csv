@@ -1,0 +1,34 @@
+Machine Name: wcw
+Input String: acb
+Start State : q0
+------------------
+Step 1
+Next State: q0
+Tape 0: a c b
+          ^  
+Tape 1: a _
+          ^
+------------------
+Step 2
+Next State: q1
+Tape 0: a c b
+          ^  
+Tape 1: a _
+        ^  
+------------------
+Step 3
+Next State: q1
+Tape 0: a c b
+          ^  
+Tape 1: _ a _
+        ^    
+------------------
+Step 4
+Next State: q2
+Tape 0: a c b
+            ^
+Tape 1: _ a _
+          ^  
+------------------
+Transition ('q2', ('b', 'a')) does not exist.
+String is NOT accepted.

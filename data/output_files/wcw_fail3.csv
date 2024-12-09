@@ -1,0 +1,20 @@
+Machine Name: wcw
+Input String: cc
+Start State : q0
+------------------
+Step 1
+Next State: q1
+Tape 0: c c
+        ^  
+Tape 1: _ _
+        ^  
+------------------
+Step 2
+Next State: q2
+Tape 0: c c
+          ^
+Tape 1: _ _
+          ^
+------------------
+Transition ('q2', ('c', '_')) does not exist.
+String is NOT accepted.

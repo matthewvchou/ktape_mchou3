@@ -1,0 +1,110 @@
+Machine Name: (a^n)(b^n)(c^n)
+Input String: aaaabbbbcccc
+Start State : q4
+------------------
+Step 1
+Next State: q0
+Tape 0: a a a a b b b b c c c c
+          ^                    
+Tape 1: a _
+          ^
+------------------
+Step 2
+Next State: q0
+Tape 0: a a a a b b b b c c c c
+            ^                  
+Tape 1: a a _
+            ^
+------------------
+Step 3
+Next State: q0
+Tape 0: a a a a b b b b c c c c
+              ^                
+Tape 1: a a a _
+              ^
+------------------
+Step 4
+Next State: q0
+Tape 0: a a a a b b b b c c c c
+                ^              
+Tape 1: a a a a _
+                ^
+------------------
+Step 5
+Next State: q1
+Tape 0: a a a a b b b b c c c c
+                ^              
+Tape 1: a a a a _
+              ^  
+------------------
+Step 6
+Next State: q1
+Tape 0: a a a a b b b b c c c c
+                  ^            
+Tape 1: a a a a _
+            ^    
+------------------
+Step 7
+Next State: q1
+Tape 0: a a a a b b b b c c c c
+                    ^          
+Tape 1: a a a a _
+          ^      
+------------------
+Step 8
+Next State: q1
+Tape 0: a a a a b b b b c c c c
+                      ^        
+Tape 1: a a a a _
+        ^        
+------------------
+Step 9
+Next State: q1
+Tape 0: a a a a b b b b c c c c
+                        ^      
+Tape 1: _ a a a a _
+        ^          
+------------------
+Step 10
+Next State: q2
+Tape 0: a a a a b b b b c c c c
+                        ^      
+Tape 1: _ a a a a _
+          ^        
+------------------
+Step 11
+Next State: q2
+Tape 0: a a a a b b b b c c c c
+                          ^    
+Tape 1: _ a a a a _
+            ^      
+------------------
+Step 12
+Next State: q2
+Tape 0: a a a a b b b b c c c c
+                            ^  
+Tape 1: _ a a a a _
+              ^    
+------------------
+Step 13
+Next State: q2
+Tape 0: a a a a b b b b c c c c
+                              ^
+Tape 1: _ a a a a _
+                ^  
+------------------
+Step 14
+Next State: q2
+Tape 0: a a a a b b b b c c c c _
+                                ^
+Tape 1: _ a a a a _
+                  ^
+------------------
+Step 15
+Next State: q3
+Tape 0: a a a a b b b b c c c c _ _
+                                  ^
+Tape 1: _ a a a a _ _
+                    ^
+------------------
+aaaabbbbcccc is Accepted.
